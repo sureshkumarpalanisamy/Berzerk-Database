@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `Berzerk` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `Berzerk`;
+CREATE DATABASE  IF NOT EXISTS `berzerk` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `berzerk`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: Berzerk
@@ -118,7 +118,7 @@ DROP TABLE IF EXISTS `Menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Menu` (
-  `MenuID` int(10) NOT NULL,
+  `MenuID` int(10) NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `ParentMenuID` int(10) DEFAULT NULL,
   `MenuOrder` int(10) NOT NULL,
@@ -151,7 +151,7 @@ DROP TABLE IF EXISTS `Organization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Organization` (
-  `OrgID` int(10) NOT NULL,
+  `OrgID` int(10) NOT NULL AUTO_INCREMENT,
   `EntityTypeID` int(10) NOT NULL,
   `TenantID` varchar(100) DEFAULT NULL,
   `TenantTypeID` int(10) DEFAULT NULL,
@@ -178,7 +178,7 @@ CREATE TABLE `Organization` (
   `UpdatedAt` datetime DEFAULT NULL,
   `UpdatedBy` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`OrgID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -187,7 +187,7 @@ CREATE TABLE `Organization` (
 
 LOCK TABLES `Organization` WRITE;
 /*!40000 ALTER TABLE `Organization` DISABLE KEYS */;
-INSERT INTO `Organization` VALUES (0,1,NULL,NULL,'Bretford','ordersupport@bretford.com','800-521-9614','11000 Seymour Avenue','Franklin Park','IL',60131,'USA',1,0,NULL,0,NULL,'4acaac37',NULL,NULL,NULL,0,'2017-03-31 13:17:33','4acaac37','2017-03-31 13:17:33','4acaac37');
+INSERT INTO `Organization` VALUES (1,1,NULL,NULL,'Bretford','ordersupport@bretford.com','800-521-9614','11000 Seymour Avenue','Franklin Park','IL',60131,'USA',1,0,NULL,0,NULL,'58cfd85ebdaeed709e2d22e2',NULL,NULL,NULL,0,'2017-03-31 13:17:33','4acaac37','2017-03-31 13:17:33','4acaac37'),(2,1,'undefined',3,'Duval County Public School District','contact@duvalschools.org','123-654-8790','223 E.Concord Street','Orlando','FL',32801,'USA',1,0,'Active',1,1,'undefined','ACJhSybpW69kBDbvNS3Az9RVOEUb8Z4f96OtiKGQ','Duval123','test',0,'2017-04-05 05:25:40','8KRFfFKia7Tg1','2017-04-05 05:25:40','8KRFfFKia7Tg1');
 /*!40000 ALTER TABLE `Organization` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,9 +261,9 @@ DROP TABLE IF EXISTS `Role_Menu`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Role_Menu` (
   `RoleID` int(10) NOT NULL,
-  `MenuID` int(10) DEFAULT NULL,
-  `CreatedAt` datetime DEFAULT NULL,
-  `CreatedBy` varchar(100) DEFAULT NULL,
+  `MenuID` int(10) NOT NULL,
+  `CreatedAt` datetime NOT NULL,
+  `CreatedBy` varchar(100) NOT NULL,
   `UpdatedAt` datetime DEFAULT NULL,
   `UpdatedBy` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -290,13 +290,14 @@ CREATE TABLE `Tenant_Hierarchy` (
   `InternalName` varchar(100) NOT NULL,
   `AliasName` varchar(100) DEFAULT NULL,
   `HierarchyOrder` int(10) DEFAULT NULL,
+  `TenantID` varchar(100) DEFAULT NULL,
   `IsDeleted` tinyint(1) NOT NULL DEFAULT '0',
   `CreatedAt` datetime NOT NULL,
   `CreatedBy` varchar(100) NOT NULL,
   `UpdatedAt` datetime DEFAULT NULL,
   `UpdatedBy` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`HierarchyID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -305,7 +306,7 @@ CREATE TABLE `Tenant_Hierarchy` (
 
 LOCK TABLES `Tenant_Hierarchy` WRITE;
 /*!40000 ALTER TABLE `Tenant_Hierarchy` DISABLE KEYS */;
-INSERT INTO `Tenant_Hierarchy` VALUES (1,'Site','Site',1,0,'2017-03-31 13:05:34','1','2017-03-31 13:05:34','1'),(2,'Zone','Zone',2,0,'2017-03-31 13:05:53','1','2017-03-31 13:05:53','1'),(3,'Sub Zone','Sub Zone',3,0,'2017-03-31 13:06:14','1','2017-03-31 13:06:14','1'),(4,'Location','Block',4,0,'2017-03-31 13:06:29','1','2017-03-31 13:06:29','1');
+INSERT INTO `Tenant_Hierarchy` VALUES (1,'Organizaion','Site',1,NULL,0,'2017-03-31 13:05:34','1','2017-03-31 13:05:34','1'),(2,'Site','Zone',2,NULL,0,'2017-03-31 13:05:53','1','2017-03-31 13:05:53','1'),(3,'Zone','Sub Zone',3,NULL,0,'2017-03-31 13:06:14','1','2017-03-31 13:06:14','1'),(4,'Group','Block',4,NULL,0,'2017-03-31 13:06:29','1','2017-03-31 13:06:29','1'),(5,'Sub-Group','Locqtion',5,'NULL',0,'2017-04-04 12:56:27','1','2017-04-04 12:56:27','1');
 /*!40000 ALTER TABLE `Tenant_Hierarchy` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,7 +335,7 @@ CREATE TABLE `Tenant_Type` (
 
 LOCK TABLES `Tenant_Type` WRITE;
 /*!40000 ALTER TABLE `Tenant_Type` DISABLE KEYS */;
-INSERT INTO `Tenant_Type` VALUES (1,'School District',0,'2017-03-31 13:23:22','4acaac37','2017-03-31 13:23:22','4acaac37'),(2,'Gym',0,'2017-03-31 13:23:50','4acaac37','2017-03-31 13:23:50','4acaac37'),(3,'School',0,'2017-03-31 13:24:24','4acaac37','2017-03-31 13:24:24','4acaac37');
+INSERT INTO `Tenant_Type` VALUES (1,'School District',0,'2017-03-31 13:23:22','58cfd85ebdaeed709e2d22e2','2017-03-31 13:23:22','58cfd85ebdaeed709e2d22e2'),(2,'Gym',0,'2017-03-31 13:23:50','58cfd85ebdaeed709e2d22e2','2017-03-31 13:23:50','58cfd85ebdaeed709e2d22e2'),(3,'School',0,'2017-03-31 13:24:24','58cfd85ebdaeed709e2d22e2','2017-03-31 13:24:24','58cfd85ebdaeed709e2d22e2');
 /*!40000 ALTER TABLE `Tenant_Type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -362,6 +363,7 @@ CREATE TABLE `Web_User` (
   `CreatedBy` varchar(100) NOT NULL,
   `UpdatedAt` datetime DEFAULT NULL,
   `UpdatedBy` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`WebUserID`),
   UNIQUE KEY `WebUserID_UNIQUE` (`WebUserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -372,7 +374,7 @@ CREATE TABLE `Web_User` (
 
 LOCK TABLES `Web_User` WRITE;
 /*!40000 ALTER TABLE `Web_User` DISABLE KEYS */;
-INSERT INTO `Web_User` VALUES ('4acaac37','Caleb',NULL,'Durante','cdurante@bretford.com',NULL,NULL,'0000-00-00 00:00:00','2017-03-31 13:28:54','Auth0',1,'0','2017-03-31 13:28:54','4acaac37','2017-03-31 13:28:54','4acaac37');
+INSERT INTO `Web_User` VALUES ('58cfd85ebdaeed709e2d22e2','Caleb',NULL,'Durante','cdurante@bretford.com',NULL,NULL,'2017-03-25 11:18:14','2017-03-31 13:28:54','Auth0',1,'0','2017-03-31 13:28:54','4acaac37','2017-03-31 13:28:54','4acaac37');
 /*!40000 ALTER TABLE `Web_User` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -385,10 +387,10 @@ DROP TABLE IF EXISTS `Web_User_Org_Role`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Web_User_Org_Role` (
   `WebUserID` varchar(100) NOT NULL,
-  `OrgID` int(10) DEFAULT NULL,
-  `RoleID` int(10) DEFAULT NULL,
-  `CreatedAt` datetime DEFAULT NULL,
-  `CreatedBy` varchar(100) DEFAULT NULL,
+  `OrgID` int(10) NOT NULL,
+  `RoleID` int(10) NOT NULL,
+  `CreatedAt` datetime NOT NULL,
+  `CreatedBy` varchar(100) NOT NULL,
   `UpdatedAt` datetime DEFAULT NULL,
   `UpdatedBy` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -400,7 +402,7 @@ CREATE TABLE `Web_User_Org_Role` (
 
 LOCK TABLES `Web_User_Org_Role` WRITE;
 /*!40000 ALTER TABLE `Web_User_Org_Role` DISABLE KEYS */;
-INSERT INTO `Web_User_Org_Role` VALUES ('4acaac37',1,1,'2017-03-31 13:10:31','1','2017-03-31 13:10:31','1');
+INSERT INTO `Web_User_Org_Role` VALUES ('58cfd85ebdaeed709e2d22e2',1,1,'2017-03-31 13:10:31','1','2017-03-31 13:10:31','1');
 /*!40000 ALTER TABLE `Web_User_Org_Role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -413,4 +415,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-03 10:35:41
+-- Dump completed on 2017-04-05 11:00:48
